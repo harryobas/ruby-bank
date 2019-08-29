@@ -10,6 +10,12 @@ RSpec.describe Contexts::UserRegister do
         result = Contexts::UserRegister.call(email, password)
         expect(result).to eq({message: 'user created', user: email})
       end
+      it 'ensures an account is generated for newly created user' do
+        usr = User.new({email: "test@mail.com", password: "password"})
+        usr_id = "8"
+        Contexts::AccountCreate.expects(:call).at_most_once.with(usr_id).returns(usr)
+        Contexts::UserRegister.call("test@mail.com", "pa$$word")
+      end
     end
     context 'with no email and password' do
       it 'returns error' do
@@ -47,7 +53,7 @@ RSpec.describe Contexts::UserRegister do
         expect(result).to eq(error: "something went wrong")
       end
     end
-    
+
   end
 
 end
