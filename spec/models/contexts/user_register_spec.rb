@@ -35,6 +35,12 @@ RSpec.describe Contexts::UserRegister do
         expect(result).to eq(error: "something went wrong")
       end
     end
+    context 'password is blank' do
+      it 'returns error' do
+        result = Contexts::UserRegister.call("test@mail.com", "")
+        expect(result).to eq(error: ["Password can't be blank"])
+      end
+    end
   end
 
 end
