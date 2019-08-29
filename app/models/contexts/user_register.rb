@@ -1,6 +1,9 @@
 class Contexts::UserRegister
 
   def self.call(email, password)
+    if email.nil? || password.nil?
+      return {error: "something went wrong"}
+    end 
     new(email, password).call
   end
 
