@@ -23,6 +23,12 @@ RSpec.describe Contexts::UserRegister do
         expect(result).to eq(error: "something went wrong")
       end
     end
+    context 'with password and no email' do
+      it 'returns error' do
+        result = Contexts::UserRegister.call(nil, 'pa##word')
+        expect(result).to eq(error: "something went wrong")
+      end
+    end
   end
 
 end
