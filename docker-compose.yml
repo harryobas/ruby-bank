@@ -8,3 +8,11 @@ services:
 
     volumes:
       - .:/usr/src/ruby-bank
+    env_file:
+      - .env/development/database
+      - .env/development/web
+
+  database:
+     image: postgres
+     env_file:
+      - .env/development/database
