@@ -24,5 +24,15 @@ RSpec.describe Contexts::MoneyTransfer do
           expect(result).to eq({error: "could not find account #{700.to_s}"})
         end
       end
+      context "with invalid destination account" do
+        source = User.create(email: 'test@mail.com',
+          password: 'pa$$word', account: Account.create).account.id
+          amount = 20.0
+          result =   Contexts::MoneyTransfer.call(source, 10000, amount)
+          it 'returns error' do
+            expect(result).to eq({error: "could not find account #{10000.to_s}"})
+          end
+        end
+         
+      end
     end
-  end

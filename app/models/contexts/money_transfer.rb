@@ -12,7 +12,12 @@ class Contexts::MoneyTransfer
     rescue ActiveRecord::RecordNotFound => e
        signal_error(sender)
     end
-    @destination = Account.find_by!(id: receiver)
+    begin
+      @destination = Account.find_by!(id: receiver)
+    rescue ActiveRecord::RecordNotFound => e
+      signal_error(receiver)
+    end
+  
     assign_transferer(@sender)
   end
 
