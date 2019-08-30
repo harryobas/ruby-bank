@@ -25,6 +25,13 @@ RSpec.describe Contexts::UserLogin do
         expect(result).to eq({message:'The password provided is incorrect'})
       end
     end
+    context 'with incorrect email amd password' do
+      user = User.create(:email => "harry@aol.com", :password => '#####')
+      result = Contexts::UserLogin.call('peter@mail.com', '000000')
+      it 'returns error' do
+          expect(result).to eq({error: "peter@mail.com not found"})
+      end
+    end
 
   end
 end
