@@ -1,5 +1,6 @@
 class Contexts::MoneyTransfer
   def self.call(sender, receiver, amount)
+    return {error: "something went wrong"} unless amount.present?
     new(sender, receiver, amount).call
   rescue StandardError => e
     return {error: e.message}
@@ -17,7 +18,7 @@ class Contexts::MoneyTransfer
     rescue ActiveRecord::RecordNotFound => e
       signal_error(receiver)
     end
-  
+
     assign_transferer(@sender)
   end
 
