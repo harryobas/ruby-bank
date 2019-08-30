@@ -38,6 +38,8 @@ class Contexts::MoneyTransfer
 
   class Transferer < SimpleDelegator
     def transfer_to(destination, amount)
+      return {error: "insufficient funds"} if self.balance < amount
+      puts self.balance
       self.balance -= amount
       destination.balance += amount
       #create_transaction_entry(self, destination, amount)

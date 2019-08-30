@@ -4,6 +4,6 @@ class AutoIncrementUserid < ActiveRecord::Migration[5.1]
   end
 
   def down
-    change_column :user, :id, :integer
+    change_column :users, :id, :integer
   end
 end

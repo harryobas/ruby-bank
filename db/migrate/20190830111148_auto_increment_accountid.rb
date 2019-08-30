@@ -4,6 +4,6 @@ class AutoIncrementAccountid < ActiveRecord::Migration[5.1]
   end
 
   def down
-    change_column :account, :id, :integer
+    change_column :accounts, :id, :integer
   end
 end
