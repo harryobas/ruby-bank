@@ -11,8 +11,11 @@ services:
     env_file:
       - .env/development/database
       - .env/development/web
+      - .env/test/database
+      - .env/test/web
 
   database:
      image: postgres
      env_file:
       - .env/development/database
+      - .env/test/database
