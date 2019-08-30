@@ -8,7 +8,7 @@ class Contexts::UserLogin
   def initialize(email, password)
     @email = email
     @password = password
-    @user = User.find_by(email: @email)
+    @user = User.find_by!(email: @email)
     assign_authenticator(@user)
   end
 
