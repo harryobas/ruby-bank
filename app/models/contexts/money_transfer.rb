@@ -1,15 +1,18 @@
 class Contexts::MoneyTransfer
   def self.call(sender, receiver, amount)
     new(sender, receiver, amount).call
-  rescue ActiveRecord::RecordNotFound => e
-    return {error: e.to_s}
+  rescue StandardError => e
+    return {error: e.message}
   end
 
   def initialize(sender, receiver, amount)
     @amount = amount
-    @sender = Account.find_by!(id: sender)
+    begin
+      @sender = Account.find_by!(id: sender)
+    rescue ActiveRecord::RecordNotFound => e
+       signal_error(sender)
+    end
     @destination = Account.find_by!(id: receiver)
-
     assign_transferer(@sender)
   end
 
@@ -18,6 +21,10 @@ class Contexts::MoneyTransfer
   end
 
   private
+
+  def signal_error(account)
+    raise StandardError.new "could not find account #{account}"
+  end
 
   def assign_transferer(account)
     @transferer = Transferer.new(account)
