@@ -2,15 +2,15 @@ require 'rails_helper'
 
 RSpec.describe Contexts::MoneyTransfer do
   describe '#call' do
-    context 'with valid source and destination account' do
+    context 'with valid source, destination, and sufficient funds' do
       source = User.create(email: 'mepp@mail.com',
-        password: '$word', account: Account.create).account.id
+        password: '$word', account: Account.create({balance: 50.0})).account.id
       destination = User.create(email: 'pepe@mail.com',
         password: 'pa$4444', account: Account.create).account.id
       amount = 10.35
       result = Contexts::MoneyTransfer.call(source, destination, amount)
       it 'transfers money from source to destination account' do
-        expect(result).to eq nessage: "transfer successful",
+        expect(result).to eq message: "transfer successful",
         source: source, destination: destination, amount: amount
       end
     end
