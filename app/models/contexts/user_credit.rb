@@ -1,5 +1,6 @@
 class Contexts::UserCredit
   def self.call(account_id, amount)
+    return {error: "something went wrong"} unless amount.present?
     new(account_id, amount).call
   rescue StandardError => e
     return {error: "#{e.message.to_s}"}
@@ -12,7 +13,7 @@ class Contexts::UserCredit
       @account = Account.find_by!(id: @acc_id)
     rescue ActiveRecord::RecordNotFound => e
       signal_error(acc_id)
-    end 
+    end
     assign_creditor(@account)
   end
 

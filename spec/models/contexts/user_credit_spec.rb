@@ -18,5 +18,15 @@ RSpec.describe Contexts::UserCredit do
           expect(result).to eq error: "could not find account 200"
         end
       end
+      context 'with no amount' do
+        account_id = User.create(email: "test@mail.com",
+          password: 'password', account: Account.new).account.id
+          amount = nil
+          result = Contexts::UserCredit.call(account_id, amount)
+          it 'returns error' do
+            expect(result).to eq error: "something went wrong"
+          end
+        end
+      end
     end
-  end
+      
