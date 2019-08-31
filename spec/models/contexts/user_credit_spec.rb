@@ -11,6 +11,12 @@ RSpec.describe Contexts::UserCredit do
         it 'adds amount to balance' do
           expect(result[:balance]).to be > balance
         end
+      end
+      context 'with invalid user account' do
+        result = Contexts::UserCredit.call("200", 78.55)
+        it "returns error" do
+          expect(result).to eq error: "could not find account 200"
+        end
+      end
     end
   end
-end

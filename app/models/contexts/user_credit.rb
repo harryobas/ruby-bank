@@ -1,13 +1,18 @@
 class Contexts::UserCredit
   def self.call(account_id, amount)
     new(account_id, amount).call
+  rescue StandardError => e
+    return {error: "#{e.message.to_s}"}
   end
 
   def initialize(acc_id, amt)
     @acc_id = acc_id
     @amt = amt
-    @account = Account.find_by!(id: @acc_id)
-
+    begin
+      @account = Account.find_by!(id: @acc_id)
+    rescue ActiveRecord::RecordNotFound => e
+      signal_error(acc_id)
+    end 
     assign_creditor(@account)
   end
 
@@ -15,8 +20,11 @@ class Contexts::UserCredit
     @creditor.credit_account(@amt)
   end
 
-
   private
+
+  def signal_error(acc)
+    raise StandardError.new "could not find account #{acc}"
+  end
 
   def assign_creditor(acc)
     @creditor = Creditor.new(acc)
@@ -34,7 +42,6 @@ class Contexts::UserCredit
         account: self.id,
         balance: self.balance
       }
-
     end
 
     def create_transaction_record(account, amt)
