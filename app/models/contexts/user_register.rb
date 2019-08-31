@@ -37,6 +37,7 @@ class Contexts::UserRegister
       } if user
 
       {error: user.errors.full_messages}
+
     end
   end
 end
