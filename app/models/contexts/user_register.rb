@@ -1,22 +1,17 @@
 class Contexts::UserRegister
 
-  def self.call(email, password)
-    if !email.present? || !password.present?
-      return {error: "something went wrong"}
-    end
-    new(email, password).call
+  def self.call(password)
+    new(password).call
   end
 
-  def initialize(email, password)
-
-    @email = email
+  def initialize(password)
     @password = password
     @user = User
     assign_registrar(@user)
   end
 
   def call
-    @registrar.register_user(@email, @password)
+    @registrar.register_user( @password)
   end
 
   private
@@ -26,9 +21,8 @@ class Contexts::UserRegister
   end
 
   class Registrar < SimpleDelegator
-    def register_user(email, password)
-      user = self.create(email: email, password: password, account: Account.new)
-      return {error: "account balance cannot be negetive"} if user.account.balance < 0.0
+    def register_user(password)
+      user = self.create(password: password, account: Account.new)
 
       return {
         message: "user created",
