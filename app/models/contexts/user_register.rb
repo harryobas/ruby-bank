@@ -27,12 +27,15 @@ class Contexts::UserRegister
 
   class Registrar < SimpleDelegator
     def register_user(email, password)
-      user = self.create(email: email, password: password, account: Account.create)
+      user = self.create(email: email, password: password, account: Account.new)
+      return {error: "account balance cannot be negetive"} if user.account.balance < 0.0
+
       return {
         message: "user created",
         id: user.id,
         account_id: user.account.id
       } if user
+
       {error: user.errors.full_messages}
     end
   end
