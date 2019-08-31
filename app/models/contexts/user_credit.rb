@@ -35,7 +35,7 @@ class Contexts::UserCredit
     def credit_account(amount)
       self.balance += amount
       if self.save
-        create_transaction_record(self, amount)
+        create_transaction_record_for_credit(self, amount)
       end
 
       return {
@@ -45,7 +45,7 @@ class Contexts::UserCredit
       }
     end
 
-    def create_transaction_record(account, amt)
+    def create_transaction_record_for_credit(account, amt)
       account.transactions << Transaction.new(timestamp: Time.now, description: "credited with #{amt}")
     end
   end

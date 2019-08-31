@@ -41,7 +41,7 @@ class Contexts::MoneyTransfer
       return {error: "insufficient funds"} if self.balance < amount
       self.balance -= amount
       destination.balance += amount
-      create_transaction_record(self, destination, amount)
+      create_transaction_record_for_transfer(self, destination, amount)
       return {
         message: "transfer successful",
         source: self.id,
@@ -50,7 +50,7 @@ class Contexts::MoneyTransfer
       }
     end
 
-    def create_transaction_record(sender, receiver, amt)
+    def create_transaction_record_for_transfer(sender, receiver, amt)
       sender.transactions << Transaction.new(timestamp: Time.now, description: "#{amt} transfered to #{receiver.id}")
       receiver.transactions << Transaction.new(timestamp: Time.now, description: "#{amt} received from #{sender.id}")
       sender.save
