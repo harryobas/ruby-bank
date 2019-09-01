@@ -4,7 +4,6 @@ class Api::V1::SessionsController < ApplicationController
   before_action :permit_params
 
   def create
-    Rails.logger.debug params.inspect
 
     usr_email = session_params[:email]
     usr_password = session_params[:password]
@@ -12,12 +11,11 @@ class Api::V1::SessionsController < ApplicationController
     render json: data
   end
 
+  private
+
   def session_params
     params.require(:login).permit(:email, :password)
   end
 
-  def permit_params
-    ActionController::Parameters.permit_all_parameters = true
-  end
 
 end

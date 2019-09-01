@@ -12,13 +12,10 @@ class Api::V1::RegistrationsController < ApplicationController
     render json: data
   end
 
+  private
+
   def registration_params
     params.require(:registration).permit(:email, :password)
   end
-
-  def permit_params
-    ActionController::Parameters.permit_all_parameters = true
-  end
-
 
 end

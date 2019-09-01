@@ -10,7 +10,7 @@ class ApplicationController < ActionController::API
   end
 
   def validate_token
-    if !logged_in
+    if !logged_in?
       render json: {error: "unauthorized"}, status: 401
     end
   end
@@ -24,4 +24,9 @@ class ApplicationController < ActionController::API
   def auth
     Auth.decode(token)
   end
+
+  def permit_params
+    ActionController::Parameters.permit_all_parameters = true
+  end
+
 end
