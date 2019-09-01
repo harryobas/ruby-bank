@@ -11,7 +11,7 @@ class Contexts::UserLogin
     begin
       @user = User.find_by!(email: @email)
     rescue ActiveRecord::RecordNotFound => e
-      raise StandardError.new("not found")
+      raise StandardError.new("#{email} not found")
     end
     assign_authenticator(@user)
   end
