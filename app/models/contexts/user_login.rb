@@ -1,14 +1,18 @@
 class Contexts::UserLogin
   def self.call(email, password)
     new(email, password).call
-  rescue ActiveRecord::RecordNotFound => e
-    return {error: "#{email} not found"}
+  rescue StandardError => e
+    return {:error => e.message}
   end
 
   def initialize(email, password)
-    @email = email
     @password = password
-    @user = User.find_by!(email: @email)
+    @email = email
+    begin
+      @user = User.find_by!(email: @email)
+    rescue ActiveRecord::RecordNotFound => e
+      raise StandardError.new("not found")
+    end
     assign_authenticator(@user)
   end
 
