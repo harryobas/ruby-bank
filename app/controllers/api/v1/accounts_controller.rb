@@ -4,7 +4,7 @@ class Api::V1::AccountsController < ApplicationController
 
   def transaction_history
     data = Contexts::AccountHistory.call(account_params[:account_id])
-    render data
+    render json: data
   end
 
   private
